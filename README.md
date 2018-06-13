@@ -1,6 +1,6 @@
   # Node Web API
   
-  Prototype of a Node.js Web API (type RestAPI)
+  Generic prototype of a Node.js Web API (type RestAPI)
   
   ### Prerequisites
   
