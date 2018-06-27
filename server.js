@@ -1,38 +1,32 @@
-var express = require('express');
-var app = express();
+import express from 'express';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import path from 'path';
+import routes from './src/routes/apiRoute';
 
+const app = express();
+const PORT = 3000;
 const config = require("./config");
 
-app.get('/', function (req, res) {
-
-  var sql = require('mssql');
-
-  // Open Sql Server Configuration Manager,
-  // and enable TCP/IP protocol from SQL Server Network Configuration
-  // Port 1433
-  console.log("Connecting sql server...");
-  sql.connect(config, function (err) {
-    if (err) {
-      console.log(err);
-      return;
-    };
-
-    var request = new sql.Request();
-
-    // query to the database and get the records
-    request.query('SELECT * FROM xxx', function (err, recordset) {
-      if (err) {
-        console.log(err);
-        return;
-      };
-
-    // send records as a response
-    res.send(recordset);
-    });
-  });
+// Mongoose connection
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/apiDB', {
+  useMongoClient: true
 });
 
-// Run web server (default address : 127.0.0.1:5000)
-var server = app.listen(5000, function () {
-    console.log('Server is running..');
-});
+// bodyparser setup
+app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.json());
+
+// Call routes controller
+// Test Api calls with Postman (https://www.getpostman.com/)
+routes(app);
+
+// Server static public files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Run web server (default address : 127.0.0.1:3000)
+// Warning : ECS6 syntax "() => .." - that's why Babel is necessary
+app.listen(PORT, () =>
+    console.log(`Your server is running on port ${PORT}`)
+);
