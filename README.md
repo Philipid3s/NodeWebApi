@@ -1,6 +1,6 @@
-  # Node Web API
+  # Express / MongoDB API 
   
-  Generic prototype of a Node.js Web API (type RestAPI)
+  Generic prototype of a Node.js/Express Web API (type RestAPI)
   
   ### Install
   
